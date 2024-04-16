@@ -57,8 +57,8 @@ SplaTAM has been tested on python 3.10, CUDA>=11.8. The simplest way to install 
 ```bash
 conda create -n splatam python=3.10
 conda activate splatam
-conda install -c "nvidia/label/cuda-11.6.0" cuda-toolkit
-conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.6 -c pytorch -c conda-forge
+conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.7 -c pytorch -c conda-forge
 pip install -r requirements.txt
 ```
 
@@ -73,7 +73,7 @@ conda activate splatam
 
 ### Online
 
-You can SplaTAM your own environment with an iPhone or LiDAR-equipped Apple device by downloading and using the <a href="https://apps.apple.com/au/app/nerfcapture/id6446518379">NeRFCapture</a> app.
+You can SplaTAM your own environment with any device by downloading and using the <a href="https://apps.apple.com/au/app/nerfcapture/id6446518379">NeRFCapture</a> app
 
 Make sure that your iPhone and PC are connected to the same WiFi network, and then run the following command:
 

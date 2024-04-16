@@ -24,7 +24,15 @@ if __name__ == '__main__':
 
     DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(DEVICE)
-    model = DepthAnything.from_pretrained(f'LiheYoung/depth_anything_{args.encoder}14').to(DEVICE).eval()
+    model_configs = {
+        'vitl': {'encoder': 'vitl', 'features': 256, 'out_channels': [256, 512, 1024, 1024]},
+        'vitb': {'encoder': 'vitb', 'features': 128, 'out_channels': [96, 192, 384, 768]},
+        'vits': {'encoder': 'vits', 'features': 64, 'out_channels': [48, 96, 192, 384]}
+    }
+
+    encoder = 'vitl' # or 'vitb', 'vits'
+    depth_anything = DepthAnything(model_configs[encoder])
+    model = depth_anything.load_state_dict(torch.load(f'.depth_anything_vitl14.pth'))
 
     transform = Compose([
         Resize(width=518, 

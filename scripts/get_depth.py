@@ -1,3 +1,5 @@
+import sys
+sys.path.append('./')
 import argparse
 import cv2
 import numpy as np
@@ -31,8 +33,8 @@ if __name__ == '__main__':
     }
 
     encoder = 'vitl' # or 'vitb', 'vits'
-    depth_anything = DepthAnything(model_configs[encoder])
-    model = depth_anything.load_state_dict(torch.load(f'.depth_anything_vitl14.pth'))
+    depth_anything = DepthAnything(model_configs[encoder]).to(DEVICE).eval()
+    depth_anything.load_state_dict(torch.load('depth_anything_vitl14.pth'))
 
     transform = Compose([
         Resize(width=518, 
@@ -58,7 +60,7 @@ if __name__ == '__main__':
         image = torch.from_numpy(image).unsqueeze(0).to(DEVICE)
 
         with torch.no_grad():
-            depth = model(image)
+            depth = depth_anything(image)
         depth = torch.nn.functional.interpolate(depth[None], (h, w), mode='bilinear', align_corners=False)[0, 0]
         depth = (depth - depth.min()) / (depth.max() - depth.min()) * 255.0
         depth = depth.cpu().numpy().astype(np.uint8)

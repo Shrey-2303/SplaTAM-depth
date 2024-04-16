@@ -2,36 +2,21 @@
 
 <p align="center">
 
-  <h1 align="center">SplaTAM: Splat, Track & Map 3D Gaussians for Dense RGB-D SLAM</h1>
-  <h3 align="center">CVPR 2024</h3>
+  <h1 align="center">SplaTAM-Anything: Splat, track and map with any camera</h1>
   <p align="center">
-    <a href="https://nik-v9.github.io/"><strong>Nikhil Keetha</strong></a>
+    <a href="https://nik-v9.github.io/"><strong>An Dang</strong></a>
     ·
-    <a href="https://jaykarhade.github.io/"><strong>Jay Karhade</strong></a>
+    <a href="https://jaykarhade.github.io/"><strong>Frank Lai</strong></a>
     ·
-    <a href="https://krrish94.github.io/"><strong>Krishna Murthy Jatavallabhula</strong></a>
+    <a href="https://krrish94.github.io/"><strong>Shrey Shah</strong></a>
     ·
-    <a href="https://gengshan-y.github.io/"><strong>Gengshan Yang</strong></a>
-    ·
-    <a href="https://theairlab.org/team/sebastian/"><strong>Sebastian Scherer</strong></a>
-    <br>
-    <a href="https://www.cs.cmu.edu/~deva/"><strong>Deva Ramanan</strong></a>
-    ·
-    <a href="https://www.vision.rwth-aachen.de/person/216/"><strong>Jonathon Luiten</strong></a>
   </p>
   <h3 align="center"><a href="https://arxiv.org/pdf/2312.02126.pdf">Paper</a> | <a href="https://youtu.be/jWLI-OFp3qU">Video</a> | <a href="https://spla-tam.github.io/">Project Page</a></h3>
   <div align="center"></div>
 </p>
 
-<p align="center">
-  <a href="">
-    <img src="./assets/1.gif" alt="Logo" width="100%">
-  </a>
-</p>
 
 <br>
-
-## Stay Tuned for a Faster and Better Variant of SplaTAM! 
 
 <!-- TABLE OF CONTENTS -->
 <details open="open" style='padding: 10px; border-radius:5px 30px 30px 5px; border-style: solid; border-width: 1px;'>
@@ -67,13 +52,13 @@
 ## Installation
 
 ##### (Recommended)
-SplaTAM has been tested on python 3.10, CUDA>=11.6. The simplest way to install all dependences is to use [anaconda](https://www.anaconda.com/) and [pip](https://pypi.org/project/pip/) in the following steps: 
+SplaTAM has been tested on python 3.10, CUDA>=11.8. The simplest way to install all dependences is to use [anaconda](https://www.anaconda.com/) and [pip](https://pypi.org/project/pip/) in the following steps: 
 
 ```bash
 conda create -n splatam python=3.10
 conda activate splatam
-conda install -c "nvidia/label/cuda-11.6.0" cuda-toolkit
-conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.6 -c pytorch -c conda-forge
+conda install -c "nvidia/label/cuda-11.8.0" cuda-toolkit
+conda install pytorch==1.12.1 torchvision==0.13.1 torchaudio==0.12.1 cudatoolkit=11.7 -c pytorch -c conda-forge
 pip install -r requirements.txt
 ```
 
@@ -83,47 +68,12 @@ conda env create -f environment.yml
 conda activate splatam
 ``` -->
 
-#### Windows
-
-For installation on Windows using Git bash, please refer to the [instructions shared in Issue#9](https://github.com/spla-tam/SplaTAM/issues/9#issuecomment-1848348403).
-
-#### Docker and Singularity Setup
-
-We also provide a docker image. We recommend using a venv to run the code inside a docker image:
-
-
-```bash
-docker pull nkeetha/splatam:v1
-bash bash_scripts/start_docker.bash
-cd /SplaTAM/
-pip install virtualenv --user
-mkdir venv
-cd venv
-virtualenv --system-site-packages splatam
-source ./splatam/bin/activate
-pip install -r venv_requirements.txt
-```
-
-Setting up a singularity container is similar:
-```bash
-cd </path/to/singularity/folder/>
-singularity pull splatam.sif docker://nkeetha/splatam:v1
-singularity instance start --nv splatam.sif splatam
-singularity run --nv instance://splatam
-cd <path/to/SplaTAM/>
-pip install virtualenv --user
-mkdir venv
-cd venv
-virtualenv --system-site-packages splatam
-source ./splatam/bin/activate
-pip install -r venv_requirements.txt
-```
 
 ## Demo
 
 ### Online
 
-You can SplaTAM your own environment with an iPhone or LiDAR-equipped Apple device by downloading and using the <a href="https://apps.apple.com/au/app/nerfcapture/id6446518379">NeRFCapture</a> app.
+You can SplaTAM your own environment with any device by downloading and using the <a href="https://apps.apple.com/au/app/nerfcapture/id6446518379">NeRFCapture</a> app
 
 Make sure that your iPhone and PC are connected to the same WiFi network, and then run the following command:
 

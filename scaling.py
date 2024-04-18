@@ -11,19 +11,19 @@ import scipy.optimize
 def select_random_points(predicted_depth_image, actual_depth_image):
     height, width, channel = predicted_depth_image.shape
     random_indices = random.sample(range(0, height*width), 2000)
-    # reshaped_pred_depth = predicted_depth_image.reshape(-1,3)[:,0]
-    # reshaped_actual_depth = actual_depth_image.reshape(-1,3)[:,0]
-    # predicted_depth_values = [reshaped_pred_depth[i] for i in random_indices]
-    # actual_depth_values = [reshaped_actual_depth[i] for i in random_indices]
+    reshaped_pred_depth = predicted_depth_image.reshape(-1,3)[:,0]
+    reshaped_actual_depth = actual_depth_image.reshape(-1,3)[:,0]
+    predicted_depth_values = [reshaped_pred_depth[i] for i in random_indices]
+    actual_depth_values = [reshaped_actual_depth[i] for i in random_indices]
 
-    center_x = height//2 
-    center_y = width//2
+    # center_x = height//2 
+    # center_y = width//2
 
-    box_len = 20
-    predicted_depth_values = (predicted_depth_image[center_x - box_len:center_x + box_len,center_y - box_len:center_y+ box_len]).reshape(-1)
-    actual_depth_values = (actual_depth_image[center_x - box_len:center_x + box_len,center_y - box_len:center_y+ box_len]).reshape(-1)
-    print(actual_depth_values)
-    print(actual_depth_values)
+    # box_len = 20
+    # predicted_depth_values = (predicted_depth_image[center_x - box_len:center_x + box_len,center_y - box_len:center_y+ box_len]).reshape(-1)
+    # actual_depth_values = (actual_depth_image[center_x - box_len:center_x + box_len,center_y - box_len:center_y+ box_len]).reshape(-1)
+    # print(actual_depth_values)
+    # print(actual_depth_values)
 
     return random_indices, predicted_depth_values, actual_depth_values
 
@@ -42,17 +42,17 @@ def interpolate_depth(predicted_depth_image, random_points, predicted_depth_valu
 
     return popt, pcov
 
-# actual_depth_image = cv2.imread("notebooks/absdepth000000.png")
-# predicted_depth_image = cv2.imread("notebooks/depth000000_an.png")
-# random_points, predicted_depth_values, actual_depth_values = select_random_points(predicted_depth_image, actual_depth_image)
+actual_depth_image = cv2.imread("notebooks/absdepth000000.png")
+predicted_depth_image = cv2.imread("notebooks/depth000000_an.png")
+random_points, predicted_depth_values, actual_depth_values = select_random_points(predicted_depth_image, actual_depth_image)
 # plt.scatter(predicted_depth_values, actual_depth_values)
 # plt.show()
 
-# popt, pcov = interpolate_depth(predicted_depth_image, random_points, predicted_depth_values, actual_depth_values)
-# # print(a)
-# x = np.linspace(0, 254, 255)
-# print(x)
-# y = func(x, *popt)
+popt, pcov = interpolate_depth(predicted_depth_image, random_points, predicted_depth_values, actual_depth_values)
+# print(a)
+x = np.linspace(0, 254, 255)
+print(x)
+y = func(x, *popt)
 
 # print(popt)
 
@@ -75,10 +75,13 @@ def interpolate_depth(predicted_depth_image, random_points, predicted_depth_valu
 # # plt.show()
 # plt.hist(actual_depth_image[:,0], bins = 100)
 # plt.show()
-
-# new_image = actual_depth_image*interpolated_depth[0] + interpolated_depth[1]
-# cv2.imshow("image",new_image)
-# cv2.imwrite("abs.jpg",new_image)
+new_image = func(predicted_depth_image,*popt)
+new_image[np.isnan(new_image)] = 0
+cv2.imshow("image",new_image)
+print(new_image)
+# plt.hist(new_image[:,:,0],bins = 100)
+# plt.show()
+cv2.imwrite("abs.jpg",new_image)
 # print(interpolated_depth)
 # normalized_predicted_depth = (predicted_depth_image / 255.0) * interpolated_depth.max()
 

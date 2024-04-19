@@ -35,6 +35,65 @@ def ceneter_square_sampling(predicted_depth_image, actual_depth_image, box_size)
     # print(actual_depth_values)
     return [], predicted_depth_values, actual_depth_values
 
+def get_pointcloud(width, height, distances, indicies, w2c, transform_pts=True, 
+                   compute_mean_sq_dist=False, mean_sq_dist_method="projective"):
+    import numpy as np
+    w2c = numpy.eye(4)
+
+    FX = 300
+    FY = 300
+    CX = 299.75
+    CY = 169.75
+
+    # Compute indices of pixels
+    x_grid, y_grid = torch.meshgrid(torch.arange(width).cuda().float(), 
+                                    torch.arange(height).cuda().float(),
+                                    indexing='xy')
+    xx = (x_grid - CX)/FX
+    yy = (y_grid - CY)/FY
+    xx = xx.reshape(-1)[indicies]
+    yy = yy.reshape(-1)[indicies]
+    depth_z = distances
+    # depth_z = depth[0].reshape(-1)
+    # print(xx.device)
+    # print(yy.device)
+    # print(depth_z.device)
+    # print(width, height)
+    # # Initialize point cloud
+    pts_cam = torch.stack((xx * depth_z, yy * depth_z, depth_z), dim=-1)
+    
+    if transform_pts:
+        pix_ones = torch.ones(height * width, 1).cuda().float()
+        pts4 = torch.cat((pts_cam, pix_ones), dim=1)
+        c2w = torch.inverse(w2c)
+        pts = (c2w @ pts4.T).T[:, :3]
+    else:
+        pts = pts_cam
+
+    # Compute mean squared distance for initializing the scale of the Gaussians
+    if compute_mean_sq_dist:
+        if mean_sq_dist_method == "projective":
+            # Projective Geometry (this is fast, farther -> larger radius)
+            scale_gaussian = depth_z / ((FX + FY)/2)
+            mean3_sq_dist = scale_gaussian**2
+        else:
+            raise ValueError(f"Unknown mean_sq_dist_method {mean_sq_dist_method}")
+    
+    # Colorize point cloud
+    cols = torch.permute(color, (1, 2, 0)).reshape(-1, 3) # (C, H, W) -> (H, W, C) -> (H * W, C)
+    point_cld = torch.cat((pts, cols), -1)
+
+    # Select points based on mask
+    if mask is not None:
+        point_cld = point_cld[mask]
+        if compute_mean_sq_dist:
+            mean3_sq_dist = mean3_sq_dist[mask]
+
+    if compute_mean_sq_dist:
+        return point_cld, mean3_sq_dist
+    else:
+        return point_cld
+
 class Scaling():
     def __init__(self):
         self.popt = []
@@ -168,12 +227,12 @@ def smoothening():
 
 
 if __name__ == "__main__":
-    base_path = "../SplaTAM/experiments/iPhone_Captures/offline_demo/depth_predict"
-    output_path = "../SplaTAM/experiments/iPhone_Captures/offline_demo/depth_converted"
-    gt_path = "../SplaTAM/experiments/iPhone_Captures/offline_demo/depth"
-    adjust_and_save_depth_images(base_path, output_path, gt_path)
-    # smoothening()
-    exit()
+    base_path = ".\\notebooks\\rel"
+    output_path = "."
+    gt_path = ".\\notebooks\\gt"
+    # adjust_and_save_depth_images(base_path, output_path, gt_path)
+    # # smoothening()
+    # exit()
     scaler = Scaling()
     files  = ["depth000000.png"] 
     for filename in files:
@@ -189,15 +248,40 @@ if __name__ == "__main__":
         # cv2.imwrite("2.png",gt_image)
         # cv2.waitkey(10)
 
-        _, predicted_depth_values, actual_depth_values = point_sampling(image, gt_image, 500)
+        _, predicted_depth_values, actual_depth_values = point_sampling(image, gt_image, 300)
         popt, pcov = scaler.get_optimal_conversion(predicted_depth_values, actual_depth_values)
-        print(scaler.initialized)
+        # print(scaler.initialized)
 
-        plt.scatter(predicted_depth_values, actual_depth_values)
-        plt.savefig("output.png")
+        # plt.scatter(predicted_depth_values, actual_depth_values)
+        # # plt.savefig("output.png")
+        # plt.show()
+
+
+
+        x = np.linspace(0, 255, 256)
+        print(x)
+        y = scaler.func(x, *popt)
+        predicted_depth_image = image.reshape(-1,3)
+        actual_depth_image = gt_image.reshape(-1,3)
+        # # print()
+        # plt.scatter(x, y, label = "conversion")
+        # plt.scatter(predicted_depth_values, actual_depth_values, label = "conversion")
+        # plt.xlabel = "AnyDepth disparity depth image values"
+        # plt.ylabel = "corresponding lidar depth values"
+        plt.xlabel("Depth Anything disparity depth image values")
+        plt.ylabel("corresponding depth image values")
+        plt.scatter(predicted_depth_image[:,0],actual_depth_image[:,0], 3, label = "data")
+        plt.plot(x, y, c= "red", label = "transformation function")
+
+        # plt.scatter(predicted_depth_values, func(predicted_depth_values, *popt))
+        plt.legend()
+        plt.show()
 
         converted_image = scaler.convert(image)
         cv2.imwrite("output_image.png", converted_image)
+        cv2.imshow("output_image", converted_image)
+        # while True:
+        #     cv2.waitKey(1)
         
 
 

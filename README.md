@@ -4,14 +4,13 @@
 
   <h1 align="center">SplaTAM-Anything: Splat, track and map with any camera</h1>
   <p align="center">
-    <a href="https://nik-v9.github.io/"><strong>An Dang</strong></a>
+    <a href="https://dangtthanhan507.github.io/"><strong>An Dang</strong></a>
     ·
-    <a href="https://jaykarhade.github.io/"><strong>Frank Lai</strong></a>
+    <a href="https://frankylai.github.io/"><strong>Frank Lai</strong></a>
     ·
-    <a href="https://krrish94.github.io/"><strong>Shrey Shah</strong></a>
+    <a href="https://Shrey-2303.github.io/"><strong>Shrey Shah</strong></a>
     ·
   </p>
-  <h3 align="center"><a href="https://arxiv.org/pdf/2312.02126.pdf">Paper</a> | <a href="https://youtu.be/jWLI-OFp3qU">Video</a> | <a href="https://spla-tam.github.io/">Project Page</a></h3>
   <div align="center"></div>
 </p>
 
@@ -68,43 +67,6 @@ conda env create -f environment.yml
 conda activate splatam
 ``` -->
 
-
-## Demo
-
-### Online
-
-You can SplaTAM your own environment with any device by downloading and using the <a href="https://apps.apple.com/au/app/nerfcapture/id6446518379">NeRFCapture</a> app
-
-Make sure that your iPhone and PC are connected to the same WiFi network, and then run the following command:
-
- ```bash
-bash bash_scripts/online_demo.bash configs/iphone/online_demo.py
-```
-
-On the app, keep clicking send for successive frames. Once the capturing of frames is done, the app will disconnect from the PC and check out SplaTAM's interactive rendering of the reconstruction on your PC! Here are some cool example results:
-
-<p align="center">
-  <a href="">
-    <img src="./assets/collage.gif" alt="Logo" width="75%">
-  </a>
-</p>
-
-### Offline
-
-You can also first capture the dataset and then run SplaTAM offline on the dataset with the following command:
-
-```bash
-bash bash_scripts/nerfcapture.bash configs/iphone/nerfcapture.py
-```
-
-### Dataset Collection
-
-If you would like to only capture your own iPhone dataset using the NeRFCapture app, please use the following command:
-
-```bash
-bash bash_scripts/nerfcapture2dataset.bash configs/iphone/dataset.py
-```
-
 ## Usage
 
 We will use the iPhone dataset as an example to show how to use SplaTAM. The following steps are similar for other datasets.
@@ -135,17 +97,6 @@ python scripts/export_ply.py configs/iphone/splatam.py
 
 `PLY` format Splats can be visualized in viewers such as [SuperSplat](https://playcanvas.com/supersplat/editor) & [PolyCam](https://poly.cam/tools/gaussian-splatting).
 
-To run 3D Gaussian Splatting on the SplaTAM reconstruction, please use the following command:
-
-```bash
-python scripts/post_splatam_opt.py configs/iphone/post_splatam_opt.py
-```
-
-To run 3D Gaussian Splatting on a dataset using ground truth poses, please use the following command:
-
-```bash
-python scripts/gaussian_splatting.py configs/iphone/gaussian_splatting.py
-```
 
 ## Downloads
 
@@ -157,12 +108,6 @@ Download the data as below, and the data is saved into the `./data/Replica` fold
 
 ```bash
 bash bash_scripts/download_replica.sh
-```
-
-### TUM-RGBD
-
-```bash
-bash bash_scripts/download_tum.sh
 ```
 
 ### ScanNet
@@ -205,24 +150,6 @@ scene0106_00
 scene0181_00
 scene0207_00
 ```
-
-### ScanNet++
-
-Please follow the data downloading and image undistortion procedure on the <a href="https://kaldir.vc.in.tum.de/scannetpp/">ScanNet++</a> website. 
-Additionally for undistorting the DSLR depth images, we use our <a href="https://github.com/Nik-V9/scannetpp">own variant of the official ScanNet++ processing code</a>. We will open a pull request to the official ScanNet++ repository soon.
-
-We use the following sequences: 
-
-```
-8b5caf3398
-b20a261fdf
-```
-
-For b20a261fdf, we use the first 360 frames, due to an abrupt jump/teleportation in the trajectory post frame 360. Please note that ScanNet++ was primarily intended as a NeRF Training & Novel View Synthesis dataset.
-
-### Replica-V2
-
-We use the Replica-V2 dataset from vMAP to evaluate novel view synthesis. Please download the pre-generated replica sequences from <a href="https://github.com/kxhit/vMAP">vMAP</a>.
 
 ## Benchmarking
 
@@ -282,19 +209,6 @@ python scripts/eval_novel_view.py configs/scannetpp/eval_novel_view.py
 
 For other scenes, please modify the `configs/scannetpp/splatam.py` file or use `configs/scannetpp/scannetpp.bash`.
 
-### ReplicaV2
-
-To run SplaTAM on the `room0` scene, run the following command:
-
-```bash
-python scripts/splatam.py configs/replica_v2/splatam.py
-```
-
-To run Novel View Synthesis on the `room0` scene post SplaTAM, run the following command:
-
-```bash
-python scripts/eval_novel_view.py configs/replica_v2/eval_novel_view.py
-```
 
 For other scenes, please modify the config files.
 
@@ -324,9 +238,3 @@ If you find our paper and code useful, please cite us:
       }
 ```
 
-## Developers
-- [Nik-V9](https://github.com/Nik-V9) ([Nikhil Keetha](https://nik-v9.github.io/))
-- [JayKarhade](https://github.com/JayKarhade) ([Jay Karhade](https://jaykarhade.github.io/))
-- [JonathonLuiten](https://github.com/JonathonLuiten) ([Jonathan Luiten](https://www.vision.rwth-aachen.de/person/216/))
-- [krrish94](https://github.com/krrish94) ([Krishna Murthy Jatavallabhula](https://krrish94.github.io/))
-- [gengshan-y](https://github.com/gengshan-y) ([Gengshan Yang](https://gengshan-y.github.io/))

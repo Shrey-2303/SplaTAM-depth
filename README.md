@@ -3,16 +3,6 @@
 <p align="center">
 
   <h1 align="center">SplaTAM-Anything: Splat, track and map with any camera</h1>
-  <p align="center">
-    <a href="https://dangtthanhan507.github.io/"><strong>An Dang</strong></a>
-    ·
-    <a href="https://frankylai.github.io/"><strong>Frank Lai</strong></a>
-    ·
-    <a href="https://Shrey-2303.github.io/"><strong>Shrey Shah</strong></a>
-    ·
-  </p>
-  <div align="center"></div>
-</p>
 
 
 <br>
@@ -25,25 +15,13 @@
       <a href="#installation">Installation</a>
     </li>
     <li>
-      <a href="#demo">Online Demo</a>
-    </li>
-    <li>
       <a href="#usage">Usage</a>
     </li>
     <li>
       <a href="#downloads">Downloads</a>
     </li>
     <li>
-      <a href="#benchmarking">Benchmarking</a>
-    </li>
-    <li>
-      <a href="#acknowledgement">Acknowledgement</a>
-    </li>
-    <li>
       <a href="#citation">Citation</a>
-    </li>
-    <li>
-      <a href="#developers">Developers</a>
     </li>
   </ol>
 </details>
@@ -69,7 +47,7 @@ conda activate splatam
 
 ## Usage
 
-We will use the iPhone dataset as an example to show how to use SplaTAM. The following steps are similar for other datasets.
+We will use the Replica dataset as an example to show how to prepare the dataset and use SplaTAM for sparse reconstruction. The following steps are similar for other datasets if you would like to test on. We ran our code on 2 Datasets - Replica and Scannetv1. Replica is an opensource dataset which can be downloaded by following the link in datasets section and for Scannet you would need to fill out a form to get the download link from the .
 
 To run SplaTAM, please use the following command:
 
@@ -153,9 +131,7 @@ scene0207_00
 
 ## Benchmarking
 
-For running SplaTAM, we recommend using [weights and biases](https://wandb.ai/) for the logging. This can be turned on by setting the `wandb` flag to True in the configs file. Also make sure to specify the path `wandb_folder`. If you don't have a wandb account, first create one. Please make sure to change the `entity` config to your wandb account. Each scene has a config folder, where the `input_folder` and `output` paths need to be specified. 
-
-Below, we show some example run commands for one scene from each dataset. After SLAM, the trajectory error will be evaluated along with the rendering metrics. The results will be saved to `./experiments` by default.
+For running SplaTAM, They recommend running on weights and biases but it's okay to run offline for convinience. But if you still want wandb to log all your parameter, you can set the `wandb` flag to True in the configs file. Also make sure to specify the path `wandb_folder`. 
 
 ### Replica
 
@@ -173,13 +149,7 @@ python scripts/splatam.py configs/replica/splatam_s.py
 
 For other scenes, please modify the `configs/replica/splatam.py` file or use `configs/replica/replica.bash`.
 
-### TUM-RGBD
 
-To run SplaTAM on the `freiburg1_desk` scene, run the following command:
-
-```bash
-python scripts/splatam.py configs/tum/splatam.py
-```
 
 For other scenes, please modify the `configs/tum/splatam.py` file or use `configs/tum/tum.bash`.
 
@@ -193,37 +163,11 @@ python scripts/splatam.py configs/scannet/splatam.py
 
 For other scenes, please modify the `configs/scannet/splatam.py` file or use `configs/scannet/scannet.bash`.
 
-### ScanNet++
-
-To run SplaTAM on the `8b5caf3398` scene, run the following command:
-
-```bash
-python scripts/splatam.py configs/scannetpp/splatam.py
-```
-
-To run Novel View Synthesis on the `8b5caf3398` scene, run the following command:
-
-```bash
-python scripts/eval_novel_view.py configs/scannetpp/eval_novel_view.py
-```
 
 For other scenes, please modify the `configs/scannetpp/splatam.py` file or use `configs/scannetpp/scannetpp.bash`.
 
 
 For other scenes, please modify the config files.
-
-## Acknowledgement
-
-We thank the authors of the following repositories for their open-source code:
-
-- 3D Gaussians
-  - [Dynamic 3D Gaussians](https://github.com/JonathonLuiten/Dynamic3DGaussians)
-  - [3D Gaussian Splating](https://github.com/graphdeco-inria/gaussian-splatting)
-- Dataloaders
-  - [GradSLAM & ConceptFusion](https://github.com/gradslam/gradslam/tree/conceptfusion)
-- Baselines
-  - [Nice-SLAM](https://github.com/cvg/nice-slam)
-  - [Point-SLAM](https://github.com/eriksandstroem/Point-SLAM)
 
 ## Citation
 

@@ -2,7 +2,7 @@
 
 <p align="center">
 
-  <h1 align="center">SplaTAM-Anything: Splat and track with any sparse depth map</h1>
+  <h1 align="center">SplaTAM++: Full stack splatting based SLAM</h1>
 
 
 <br>

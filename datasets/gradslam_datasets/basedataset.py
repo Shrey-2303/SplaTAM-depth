@@ -20,7 +20,7 @@ import numpy as np
 import torch
 import yaml
 from natsort import natsorted
-from scaling import *
+# from scaling import *
 from .geometryutils import relative_transformation
 from . import datautils
 
@@ -301,6 +301,8 @@ class GradSLAMDataset(torch.utils.data.Dataset):
         if ".png" in depth_path:
             # depth_data = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED)
             depth = np.asarray(imageio.imread(depth_path), dtype=np.int64)
+            depth = depth / (2**8 - 1) * (2**15 - 1)
+            depth = depth[:,:,0]
         elif ".exr" in depth_path:
             depth = readEXR_onlydepth(depth_path)
 

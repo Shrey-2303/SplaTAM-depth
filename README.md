@@ -20,9 +20,6 @@
     <li>
       <a href="#downloads">Downloads</a>
     </li>
-    <li>
-      <a href="#citation">Citation</a>
-    </li>
   </ol>
 </details>
 
@@ -137,10 +134,12 @@ Below is the large version of the Depth-Anything model you can find the small an
 
 # Data sampling and conversion
 
-For Imitating sparse data from the Lidar sensors, first install the  file for Depth Anything from below. Keep the  file in the main directory, Keep in mind the default data folder is data/..... for Replica and Scannet. the conversion code read from there but you can also provide a argument for input path to do the same thing. After Creating the converted files Run the next script to replace the data from the ground truth to the converted depth maps. The original depth values are stored in the folder "original values". After the files have been replaced you can proceed to run the splatam as before. You can also run the normal splatam without anything by just running it normally without data modifications. 
+For imitating sparse data from the Lidar sensors, first install the  file for Depth Anything from below. Keep the  file in the main directory, Keep in mind the default data folder is data/..... for Replica and Scannet. the conversion code read from there but you can also provide a argument for input path to do the same thing. After Creating the converted files replace the new depth files wth the original andcontinue to run the splatam.
 
 ```bash
-python scripts/splatam.py configs/replica/splatam.py
+python scripts/data_prep.py --img-path data/Replica/room0/results --outdir ./converted_depth --grayscale
+python scripts/data_prep.py --img-path <path-to-input-directory> --outdir <path-to-output-directory --grayscale
+
 ```
 
 For running SplaTAM, The original oauthors recommend running on weights and biases but it's okay to run offline for convinience. But if you still want to run on wandb and log all your parameter, you can set the `wandb` flag to True in the configs file. Also make sure to specify the path `wandb_folder`. 

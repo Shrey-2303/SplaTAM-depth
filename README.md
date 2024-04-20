@@ -2,7 +2,7 @@
 
 <p align="center">
 
-  <h1 align="center">SplaTAM-Anything: Splat, track and map with any camera</h1>
+  <h1 align="center">SplaTAM-Anything: Splat and track with any sparse depth map</h1>
 
 
 <br>
@@ -129,9 +129,15 @@ scene0181_00
 scene0207_00
 ```
 
-## Benchmarking
+# Data sampling and conversion
 
-For running SplaTAM, They recommend running on weights and biases but it's okay to run offline for convinience. But if you still want wandb to log all your parameter, you can set the `wandb` flag to True in the configs file. Also make sure to specify the path `wandb_folder`. 
+For Imitating sparse data from the Lidar sensors, first install the model file for Depth Anything from below. Keep the model file in the main directory, Keep in mind the default data folder is data/..... for Replica and Scannet. the conversion code read from there but you can also provide a argument for input path to do the same thing. After Creating the converted files Run the next script to replace the data from the ground truth to the converted depth maps. The original depth values are stored in the folder "original values". After the files have been replaced you can proceed to run the splatam as before. You can also run the normal splatam without anything by just running it normally without data modifications. 
+
+```bash
+python scripts/splatam.py configs/replica/splatam.py
+```
+
+For running SplaTAM, The original oauthors recommend running on weights and biases but it's okay to run offline for convinience. But if you still want to run on wandb and log all your parameter, you can set the `wandb` flag to True in the configs file. Also make sure to specify the path `wandb_folder`. 
 
 ### Replica
 
@@ -162,9 +168,6 @@ python scripts/splatam.py configs/scannet/splatam.py
 ```
 
 For other scenes, please modify the `configs/scannet/splatam.py` file or use `configs/scannet/scannet.bash`.
-
-
-For other scenes, please modify the `configs/scannetpp/splatam.py` file or use `configs/scannetpp/scannetpp.bash`.
 
 
 For other scenes, please modify the config files.

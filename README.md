@@ -169,16 +169,3 @@ For other scenes, please modify the `configs/scannetpp/splatam.py` file or use `
 
 For other scenes, please modify the config files.
 
-## Citation
-
-If you find our paper and code useful, please cite us:
-
-```bib
-@inproceedings{keetha2024splatam,
-        title={SplaTAM: Splat, Track & Map 3D Gaussians for Dense RGB-D SLAM},
-        author={Keetha, Nikhil and Karhade, Jay and Jatavallabhula, Krishna Murthy and Yang, Gengshan and Scherer, Sebastian and Ramanan, Deva and Luiten, Jonathon},
-        booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-        year={2024}
-      }
-```
-
